@@ -224,7 +224,7 @@ type OrderDetail struct {
 	Trades          []TradeHistory
 }
 
-// OrderCancellation type requred when requesting to cancel an order
+// OrderCancellation type required when requesting to cancel an order
 type OrderCancellation struct {
 	AccountID     string
 	OrderID       string

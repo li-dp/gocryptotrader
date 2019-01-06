@@ -12,6 +12,7 @@ import (
 	"github.com/thrasher-/gocryptotrader/common"
 	"github.com/thrasher-/gocryptotrader/currency/pair"
 	exchange "github.com/thrasher-/gocryptotrader/exchanges"
+	"github.com/thrasher-/gocryptotrader/exchanges/assets"
 	"github.com/thrasher-/gocryptotrader/exchanges/orderbook"
 )
 
@@ -158,7 +159,7 @@ func (c *CoinbasePro) WsHandleData() {
 				c.Websocket.DataHandler <- exchange.TickerData{
 					Timestamp: time.Now(),
 					Pair:      pair.NewCurrencyPairFromString(ticker.ProductID),
-					AssetType: "SPOT",
+					AssetType: assets.AssetTypeSpot,
 					Exchange:  c.GetName(),
 					OpenPrice: ticker.Price,
 					HighPrice: ticker.High24H,
@@ -233,7 +234,7 @@ func (c *CoinbasePro) ProcessSnapshot(snapshot WebsocketOrderbookSnapshot) error
 
 	p := pair.NewCurrencyPairFromString(snapshot.ProductID)
 
-	base.AssetType = "SPOT"
+	base.AssetType = assets.AssetTypeSpot
 	base.Pair = p
 	base.CurrencyPair = snapshot.ProductID
 	base.LastUpdated = time.Now()
@@ -245,7 +246,7 @@ func (c *CoinbasePro) ProcessSnapshot(snapshot WebsocketOrderbookSnapshot) error
 
 	c.Websocket.DataHandler <- exchange.WebsocketOrderbookUpdate{
 		Pair:     p,
-		Asset:    "SPOT",
+		Asset:    assets.AssetTypeSpot,
 		Exchange: c.GetName(),
 	}
 
@@ -273,14 +274,14 @@ func (c *CoinbasePro) ProcessUpdate(update WebsocketL2Update) error {
 
 	p := pair.NewCurrencyPairFromString(update.ProductID)
 
-	err := c.Websocket.Orderbook.Update(Bids, Asks, p, time.Now(), c.GetName(), "SPOT")
+	err := c.Websocket.Orderbook.Update(Bids, Asks, p, time.Now(), c.GetName(), assets.AssetTypeSpot)
 	if err != nil {
 		return err
 	}
 
 	c.Websocket.DataHandler <- exchange.WebsocketOrderbookUpdate{
 		Pair:     p,
-		Asset:    "SPOT",
+		Asset:    assets.AssetTypeSpot,
 		Exchange: c.GetName(),
 	}
 

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/thrasher-/gocryptotrader/currency/pair"
+	"github.com/thrasher-/gocryptotrader/exchanges/assets"
 )
 
 func TestLenByPrice(t *testing.T) {
@@ -11,7 +12,7 @@ func TestLenByPrice(t *testing.T) {
 	i := Item{
 		Exchange:  "ANX",
 		Pair:      p,
-		AssetType: "SPOT",
+		AssetType: assets.AssetTypeSpot,
 		Price:     1200,
 		Volume:    5,
 	}
@@ -27,7 +28,7 @@ func TestLessByPrice(t *testing.T) {
 	i := Item{
 		Exchange:  "alphapoint",
 		Pair:      p,
-		AssetType: "SPOT",
+		AssetType: assets.AssetTypeSpot,
 		Price:     1200,
 		Volume:    5,
 	}
@@ -35,7 +36,7 @@ func TestLessByPrice(t *testing.T) {
 	i2 := Item{
 		Exchange:  "bitfinex",
 		Pair:      p,
-		AssetType: "SPOT",
+		AssetType: assets.AssetTypeSpot,
 		Price:     1198,
 		Volume:    20,
 	}
@@ -56,7 +57,7 @@ func TestSwapByPrice(t *testing.T) {
 	i := Item{
 		Exchange:  "bitstamp",
 		Pair:      p,
-		AssetType: "SPOT",
+		AssetType: assets.AssetTypeSpot,
 		Price:     1324,
 		Volume:    5,
 	}
@@ -64,7 +65,7 @@ func TestSwapByPrice(t *testing.T) {
 	i2 := Item{
 		Exchange:  "btcc",
 		Pair:      p,
-		AssetType: "SPOT",
+		AssetType: assets.AssetTypeSpot,
 		Price:     7863,
 		Volume:    20,
 	}
@@ -103,7 +104,7 @@ func TestSwapByVolume(t *testing.T) {
 func TestAdd(t *testing.T) {
 	Items = Items[:0]
 	p := pair.NewCurrencyPair("BTC", "USD")
-	Add("ANX", p, "SPOT", 1200, 42)
+	Add("ANX", p, assets.AssetTypeSpot, 1200, 42)
 
 	if len(Items) < 1 {
 		t.Error("Test Failed - stats Add did not add exchange info.")
@@ -116,14 +117,14 @@ func TestAdd(t *testing.T) {
 	}
 
 	p.FirstCurrency = "XBT"
-	Add("ANX", p, "SPOT", 1201, 43)
+	Add("ANX", p, assets.AssetTypeSpot, 1201, 43)
 
 	if Items[1].Pair.Pair() != "XBTUSD" {
 		t.Fatal("Test failed. stats Add did not add exchange info.")
 	}
 
 	p = pair.NewCurrencyPair("ETH", "USDT")
-	Add("ANX", p, "SPOT", 300, 1000)
+	Add("ANX", p, assets.AssetTypeSpot, 300, 1000)
 
 	if Items[2].Pair.Pair() != "ETHUSD" {
 		t.Fatal("Test failed. stats Add did not add exchange info.")
@@ -132,12 +133,12 @@ func TestAdd(t *testing.T) {
 
 func TestAppend(t *testing.T) {
 	p := pair.NewCurrencyPair("BTC", "USD")
-	Append("sillyexchange", p, "SPOT", 1234, 45)
+	Append("sillyexchange", p, assets.AssetTypeSpot, 1234, 45)
 	if len(Items) < 2 {
 		t.Error("Test Failed - stats Append did not add exchange values.")
 	}
 
-	Append("sillyexchange", p, "SPOT", 1234, 45)
+	Append("sillyexchange", p, assets.AssetTypeSpot, 1234, 45)
 	if len(Items) == 3 {
 		t.Error("Test Failed - stats Append added exchange values")
 	}
@@ -145,23 +146,23 @@ func TestAppend(t *testing.T) {
 
 func TestAlreadyExists(t *testing.T) {
 	p := pair.NewCurrencyPair("BTC", "USD")
-	if !AlreadyExists("ANX", p, "SPOT", 1200, 42) {
+	if !AlreadyExists("ANX", p, assets.AssetTypeSpot, 1200, 42) {
 		t.Error("Test Failed - stats AlreadyExists exchange does not exist.")
 	}
 	p.FirstCurrency = "dii"
-	if AlreadyExists("bla", p, "SPOT", 1234, 123) {
+	if AlreadyExists("bla", p, assets.AssetTypeSpot, 1234, 123) {
 		t.Error("Test Failed - stats AlreadyExists found incorrect exchange.")
 	}
 }
 
 func TestSortExchangesByVolume(t *testing.T) {
 	p := pair.NewCurrencyPair("BTC", "USD")
-	topVolume := SortExchangesByVolume(p, "SPOT", true)
+	topVolume := SortExchangesByVolume(p, assets.AssetTypeSpot, true)
 	if topVolume[0].Exchange != "sillyexchange" {
 		t.Error("Test Failed - stats SortExchangesByVolume incorrectly sorted values.")
 	}
 
-	topVolume = SortExchangesByVolume(p, "SPOT", false)
+	topVolume = SortExchangesByVolume(p, assets.AssetTypeSpot, false)
 	if topVolume[0].Exchange != "ANX" {
 		t.Error("Test Failed - stats SortExchangesByVolume incorrectly sorted values.")
 	}
@@ -169,12 +170,12 @@ func TestSortExchangesByVolume(t *testing.T) {
 
 func TestSortExchangesByPrice(t *testing.T) {
 	p := pair.NewCurrencyPair("BTC", "USD")
-	topPrice := SortExchangesByPrice(p, "SPOT", true)
+	topPrice := SortExchangesByPrice(p, assets.AssetTypeSpot, true)
 	if topPrice[0].Exchange != "sillyexchange" {
 		t.Error("Test Failed - stats SortExchangesByPrice incorrectly sorted values.")
 	}
 
-	topPrice = SortExchangesByPrice(p, "SPOT", false)
+	topPrice = SortExchangesByPrice(p, assets.AssetTypeSpot, false)
 	if topPrice[0].Exchange != "ANX" {
 		t.Error("Test Failed - stats SortExchangesByPrice incorrectly sorted values.")
 	}

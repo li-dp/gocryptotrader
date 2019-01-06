@@ -52,7 +52,7 @@ func TestSetup(t *testing.T) {
 	if !a.Enabled {
 		t.Error("Test Failed - ANX Setup() incorrect values set")
 	}
-	if !a.Verbose {
+	if a.Verbose {
 		t.Error("Test Failed - ANX Setup() incorrect values set")
 	}
 	if len(a.BaseCurrencies) <= 0 {

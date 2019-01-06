@@ -131,7 +131,7 @@ func TestSetAutoPairDefaults(t *testing.T) {
 		t.Fatalf("Test failed. TestSetAutoPairDefaults load config failed. Error %s", err)
 	}
 
-	if exch.Features.Supports.RESTCapabilities.AutoPairUpdates != false {
+	if exch.Features.Supports.RESTCapabilities.AutoPairUpdates {
 		t.Fatal("Test failed. TestSetAutoPairDefaults Incorrect value")
 	}
 }
