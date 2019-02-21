@@ -7,4 +7,5 @@ require (
 	github.com/toorop/go-pusher v0.0.0-20180107133620-4549deda5702
 	golang.org/x/crypto v0.0.0-20180602220124-df8d4716b347
 	golang.org/x/net v0.0.0-20180201030042-309822c5b9b9 // indirect
+	github.com/google/go-querystring v1.0.0
 )
